@@ -20,12 +20,13 @@ public class Gun_creator : MonoBehaviour
     string Weapon_name;//Arma que cogemos con los controllers
     public Text weapon_in_hand;//Texto de arma equipada
     bool CanShoot = true;//Bool para la cadencia
+    AudioSource Shot_source;
     private void Start()
     {
      
 
-        Gun_Low_Distance = new Gun_1(30,20,0.7f); //Asignamos valores a los 2 tipos de armas diferentes (Distancia, Daño, CD/Cadencia)
-        Gun_High_Distance = new Gun_1(50, 5, 0.3f);
+        Gun_Low_Distance = new Gun_1(30,20,2); //Asignamos valores a los 2 tipos de armas diferentes (Distancia, Daño, CD/Cadencia)
+        Gun_High_Distance = new Gun_1(50, 5, 1);
         Gun_parent.gun_data = this; 
 
         weapon_in_hand.text = "";
@@ -39,17 +40,19 @@ public class Gun_creator : MonoBehaviour
         if (CanShoot == true)
         {
             StartCoroutine(CoolDown()); //Cadencia
-
             if(Weapon_name== "Gun_High_Distance")
             {
+                Shot_source = canon_position_2.GetComponent<AudioSource>();
                 direction = canon_position_2.transform.forward; //Cogemos el vector director del cañon debido a que es donde apunta nuestra arma
                 position = canon_position_2.transform.position;
             }
             if (Weapon_name == "Gun_Low_Distance")
             {
+                Shot_source = Canon_position.GetComponent<AudioSource>();
                 direction = Canon_position.transform.forward; //Cogemos el vector director del cañon debido a que es donde apunta nuestra arma
                 position = Canon_position.transform.position;
             }
+            Shot_source.Play();
 
             RaycastHit hit;
             if (Physics.Raycast(position, direction, out hit, Distance)) //Raycast para detectar si hitea en enemigo
@@ -89,6 +92,6 @@ public class Gun_creator : MonoBehaviour
         yield return new WaitForSeconds(CD);
         CanShoot = true;
     }
-    
+   
 
 }
