@@ -23,8 +23,8 @@ public class Gun_creator : MonoBehaviour
     AudioSource Shot_source;
     private void Start()
     {
-     
 
+        Application.targetFrameRate = 60;//Limitar los fps
         Gun_Low_Distance = new Gun_1(30,20,2); //Asignamos valores a los 2 tipos de armas diferentes (Distancia, Daño, CD/Cadencia)
         Gun_High_Distance = new Gun_1(50, 5, 1);
         Gun_parent.gun_data = this; 
